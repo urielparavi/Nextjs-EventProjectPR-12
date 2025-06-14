@@ -52,6 +52,10 @@ export function getFilteredEvents(dateFilter) {
   let filteredEvents = DUMMY_EVENTS.filter((event) => {
     const eventDate = new Date(event.date);
     return (
+      // Compare the event's year and month:
+      // - getFullYear() returns the full year (e.g., 2022)
+      // - getMonth() returns a zero-based month (0 = January, 11 = December),
+      //   so we subtract 1 from the input month to match the Date object's format
       eventDate.getFullYear() === year && eventDate.getMonth() === month - 1
     );
   });
