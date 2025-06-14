@@ -1,5 +1,63 @@
+import Link from 'next/link';
+
 function EventItem(props) {
-  return <li></li>;
+  const { title, image, date, location, id } = props;
+
+  // In general, the Date constructor parses the date string and creates a Date object.
+  // If the string includes a time (e.g., '2025-06-14T10:30:00'), the Date object will include that time.
+  // If the string includes only a date (e.g., '2025-06-14'), the time defaults to midnight (00:00:00).
+
+  // toLocaleDateString => Convert the raw date string into a localized, human-readable format,
+  // e.g., "2025-06-14" → "June 14, 2025", based on the specified locale and formatting options.
+  const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  // Replace the comma and space in the location string with a line break,
+  // so that the address is displayed on two lines instead of one.
+  // e.g., "Tel Aviv, Israel" → "Tel Aviv\nIsrael"
+  const formattedAddress = location.replace(', ', '\n');
+
+  // Create a dynamic URL string for the event details page using the event's ID.
+  // For example, if id = 'e1', the URL will be '/events/e1'.
+  const exploreLink = `/events/${id}`;
+
+  return (
+    <li>
+      {/* 
+      We don't include 'public' in the path because Next.js serves all files
+      inside the 'public' folder at the root '/' URL automatically.
+
+      Also, we don't hardcode the 'images' folder here because the 'image' variable
+      already contains the relative path inside 'public', including the folder name.
+      This way, the path is dynamic and flexible.
+
+      Example:
+      If image = 'images/event1.jpg',
+      then src = '/images/event1.jpg' and Next.js will correctly serve the file from 'public/images/event1.jpg'.
+
+      So, the full physical path on disk is 'public/images/event1.jpg', 
+      because the 'public' folder maps directly to the root URL ('/').
+    */}
+      <img src={'/' + image} alt={title} />
+      <div>
+        <div>
+          <h2>{title}</h2>
+          <div>
+            <time>{humanReadableDate}</time>
+          </div>
+          <div>
+            <address>{formattedAddress}</address>
+          </div>
+        </div>
+        <div>
+          <Link href={exploreLink}>Explore Event</Link>
+        </div>
+      </div>
+    </li>
+  );
 }
 
 export default EventItem;
