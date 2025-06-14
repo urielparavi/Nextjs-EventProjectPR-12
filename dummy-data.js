@@ -58,6 +58,8 @@ export function getFilteredEvents(dateFilter) {
 
   return filteredEvents;
   // getFilteredEvents({ year: 2022, month: 4 });
+
+  // Result:
   // [
   //   {
   //     id: 'e3',
